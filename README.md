@@ -1,57 +1,49 @@
- ### :warning: WARNING: **This repository is deprecated and no longer maintained** :warning:
-|There is a new repository that covers the latest Azure AI code-first experiences. Navigate to and star this one instead: https://github.com/Azure-Samples/rag-data-openai-python-promptflow/tree/main|
-|---------------------------|
+# 構築手順
+リポジトリをフォーク
+CodeSpacesから新しいCodeSpaceを作成する
 
-# Azure AI Studio: Python PromptFlow Sample
+# Pythonの仮想環境の作成とライブラリのインストール
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
 
-This is the basic quickstart tutorial for the Azure AI Studio with PromptFlow. Find framework-specific versions here:
- - [Azure AI Studio SDK: Quickstart](https://github.com/Azure-Samples/aistudio-python-quickstart-sample)
- - [Azure AI Studio: Langchain Quickstart](https://github.com/Azure-Samples/aistudio-python-langchain-sample)
+# azure にログイン
+az login --use-device-code
 
-## 🧰 | Explore features of Azure AI Studio
+# 必要なリソースの作成
+sh scripts/project.sh
 
-The sample showcases features from the [Azure AI Studio preview](https://aka.ms/azureai/docs):
+# 接続の作成
+UI上の操作
 
-* [Azure AI Studio](https://aka.ms/azureaistudio/docs) - build, evaluate, deploy, your AI solution from one UI.
-* [Azure AI Services](https://learn.microsoft.com/azure/ai-services/what-are-ai-services?WT.mc_id=academic-112432-pablolopes) - core AI Service APIs & Models usable in Azure AI Studio 
-* [Azure AI SDK](https://learn.microsoft.com/azure/ai-studio/how-to/sdk-install?WT.mc_id=academic-112432-pablolopes) - for programmatic access to Azure AI Services.
-* [Azure AI CLI](https://learn.microsoft.com/azure/ai-studio/how-to/cli-install?WT.mc_id=academic-112432-pablolopes) - for command-line access to Azure AI Services.
+## 環境変数ファイルの追記
+AZURE_OPENAI_CONNECTION_NAM
+AZURE_SEARCH_CONNECTION_NAME
 
-> [!WARNING]  
-> Features contained in this repository are in private preview. Preview versions are provided without a service level agreement, and they are not recommended for production workloads. Certain features might not be supported or mvght have constrained capabilities. For more information, see [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/support/legal/preview-supplemental-terms/?WT.mc_id=academic-112432-pablolopes).
+# インデックスの作成
+python -m indexing.build_index --index-name <任意のインデックス名> --path-to-data=indexing/data
 
-## 👩🏽‍💻 | Build a copilot with your own data
+## 環境変数ファイルの追記
+AZUREAI_SEARCH_INDEX_NAME
 
-Learn to build your own copilot using the Azure AI Studio with core resources (Azure AI Services) and tools (Azure AI SDK, Azure AI CLI). The tutorial guides you through the following steps:
+# flowの作成&zip化
+python scripts/create_flow.py
+python scripts/create_flow_zip.py 
 
-1. Setup and validate your development environment.
-2. Create an Azure AI project and AI resources for your copilot.
-3. Create an Azure AI search index for your custom data.
-4. Validate copilot by asking a question about your custom data.
-5. Evaluate the performance of your copilot implementation. **Soon**
-6. (Optional) Deploy the copilot to Azure and invoke it. **Soon**
+ルートディレクトリにflow_template.zipが出来上がる。
 
-## ✅ | Pre-Requisites
+# flowのアップロード
+AI Studioに移動し、プロンプトフローからローカルアップロードを行う。
 
-To work through this tutorial you will need:
-1. Azure account with active subscription.
-2. GitHub account with access to GitHub Codespaces.
-3. (Optional) Set of docs that represent "your custom data".
+# 動作確認
+1. コンピューティングセッションON
+2. 実行
+3. traceの確認
 
-The sample comes with a set of "product data" docs as default custom data. 
+# ローカル構築 (Option)
+ローカルでlookupが使えなそうなので、現地点では使用不可能
+pf connection create -f connection/openai.yml
+pf connection create -f connection/search.yml
 
-Make sure you have [access to the Azure AI Studio](https://learn.microsoft.com/en-us/azure/ai-studio/faq#how-can-customers-access-azure-ai-studio--?WT.mc_id=academic-112432-pablolopes) in your region, and can access related resources in your subscription. Refer to the [Azure AI Studio FAQ](https://learn.microsoft.com/en-us/azure/ai-studio/faq#how-can-customers-access-azure-ai-studio--?WT.mc_id=academic-112432-pablolopes) for more details on regional availability, pricing and more.
-
-## 🏁 | Get Started
-
-Ready to get started building a copilot with your own custom data? 
-
-[**Start here**](./docs/promptflow/01-setup.md) to setup your development environment, then work through the remaining steps.
-
-## 📚 | Relevant Resources
-
-1. [Azure AI Studio](https://aka.ms/azureaistudio) - UI to explore, build & manage AI solutions.
-1. [Azure AI Studio Docs](https://aka.ms/azureaistudio/docs) - Azure AI Studio documentation.
-1. [Azure AI Services](https://learn.microsoft.com/azure/ai-services/what-are-ai-services?WT.mc_id=academic-112432-pablolopes) - Azure AI Services documentation.
-1. [Training: Using vector search in Azure Cognitive Search](https://learn.microsoft.com/training/modules/improve-search-results-vector-searc?WT.mc_id=academic-112432-pablolopes) 
-1. [Tutorial: Deploy a web app for chat on your data](https://learn.microsoft.com/azure/ai-studio/tutorials/deploy-chat-web-app?WT.mc_id=academic-112432-pablolopes) 
+ローカルでlookupが使えなそう
+https://github.com/microsoft/promptflow/issues/3632
