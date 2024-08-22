@@ -3,7 +3,7 @@ name: Bring Your Own Data QnA
 inputs:
   question:
     type: string
-    default: 就業規則について教えてください。?
+    default: 就業規則について教えてください。
     is_chat_input: false
 outputs:
   output:

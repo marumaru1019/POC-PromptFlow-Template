@@ -2,12 +2,12 @@
 
 # 環境変数の設定
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-RESOURCE_GROUP_NAME="rg-rag-flow"
+RESOURCE_GROUP_NAME=<任意のリソースグループ名>
 LOCATION="eastus"
-HUB_NAME="hub-rag-flow"
-PROJECT_NAME="project-rag-flow"
-OPENAI_SERVICE_NAME="openai-rag-flow2"
-SEARCH_SERVICE_NAME="search-rag-flow"
+HUB_NAME=<任意のHub名>
+PROJECT_NAME=<任意のプロジェクト名>
+OPENAI_SERVICE_NAME=<任意のOpenAIのサービス名>
+SEARCH_SERVICE_NAME=<任意のAI Searchのサービス名>
 
 # リソースグループの作成
 az group create --name $RESOURCE_GROUP_NAME --location $LOCATION
