@@ -86,6 +86,15 @@ sh scripts/create_project.sh
 デプロイが完了すると、下記のリソースが作成されます。
 Azure Portal上からすべてのリソースが作成されていることを確認してください。
 
+- Azure AI Hub
+- Azure AI Project
+- Azure AI Services
+- Azure Key Vault
+- Storage Account
+- Azure AI Search
+
+![image](https://github.com/user-attachments/assets/90b672bb-9390-47f5-a7e1-0e8105cef1df)
+
 また、ルートディレクトリに`.env`が作成されます。このファイルには、Azureリソースの情報が記載されています。
 
 
